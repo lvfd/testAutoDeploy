@@ -12,6 +12,7 @@
   },
   "author": "lvfd@acca.com.cn",
   "license": "ISC",
+  "publishConfig": "http://10.1.85.22:8081/repository/npm-internal/",
   "bugs": {
     "url": "https://github.com/lvfd/testAutoDeploy/issues"
   },
