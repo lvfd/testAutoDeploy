@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM node:19
+FROM node:18.13.0-alpine
 ENV NODE_ENV=production
 
 # Create app directory
@@ -19,6 +19,6 @@ RUN npm install --production
 # Bundle app source
 COPY . .
 
-EXPOSE 8013
+EXPOSE 3000
 
 CMD [ "node", "server.js" ]
