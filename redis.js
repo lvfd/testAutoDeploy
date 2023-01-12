@@ -2,7 +2,7 @@ const Redis = require('ioredis')
 
 const host = '10.1.85.160'
 // const wwwHost = '10.1.82.105'
-const cluster = new Redis.Cluster([
+const cluster = (config) => new Redis.Cluster([
 	{
 		port: 7000,
 		host: host
@@ -29,9 +29,12 @@ const cluster = new Redis.Cluster([
 	}
 ], {
 	redisOptions: {
-		password: 'Acca@1234'
+		password: 'Acca@1234',
 	},
-	enableReadyCheck: true
+	enableReadyCheck: true,
+	keyPrefix: config.keyPrefix
 })
 
-module.exports = cluster
+module.exports = {
+	cluster: cluster
+}
