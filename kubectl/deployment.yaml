@@ -69,7 +69,7 @@ spec:
     - name: http
       protocol: TCP # 协议
       port: 117  # Service端口
-      targetPort: 8080 # 容器端口
+      targetPort: 3000 # 容器端口
       nodePort: 30037  # 对外暴露的端口，可以指定
   selector:
     app: $PROJECT
