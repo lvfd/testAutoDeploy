@@ -1,0 +1,65 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: $PROJECT-log
+  labels:
+    name: $PROJECT-log
+spec:
+  capacity:
+    storage: 3Gi
+  nfs:
+    server: 10.1.85.241
+    path: /data/nfs/Project/app-log
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: $PROJECT-log
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: $PROJECT-file
+  labels:
+    name: $PROJECT-file
+spec:
+  capacity:
+    storage: 3Gi
+  nfs:
+    server: 10.1.85.241
+    path: /data/nfs/Project/app-file
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: $PROJECT-file
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: $PROJECT-file
+  namespace: dovepay-b2b
+spec:
+  accessModes:
+    - ReadWriteMany
+  selector:
+    matchLabels:
+      name: $PROJECT-file
+  resources:
+    requests:
+      storage: 3Gi
+  storageClassName: $PROJECT-file
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: $PROJECT-log
+  namespace: dovepay-b2b
+spec:
+  accessModes:
+    - ReadWriteMany
+  selector:
+    matchLabels:
+      name: $PROJECT-log
+  resources:
+    requests:
+      storage: 3Gi
+  storageClassName: $PROJECT-log

@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: $PROJECT-latest
+  labels:
+    app: $PROJECT
+    version: latest
+  namespace: dovepay-b2b
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: $PROJECT-latest
+  template:
+    metadata:
+      labels:
+        app: $PROJECT
+        version: latest
+        deployment: $PROJECT-latest
+    spec:
+      hostAliases:
+      - ip: 108.0.100.60
+        hostnames:
+        - "test.dovepay.com"
+      - ip: 108.0.100.61
+        hostnames:
+        - "test.dovepay.com"
+      containers:
+        - name: $PROJECT
+          image: $IMAGE_NAME
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: 500m
+              memory: 2Gi
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          readinessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - '-c'
+                - 'ls'
+          volumeMounts:
+            - name: app-file
+              mountPath: /home/appusr
+            - name: app-log
+              mountPath: /opt/logs
+      volumes:
+        - name: app-file
+          persistentVolumeClaim:
+            claimName: $PROJECT-file
+        - name: app-log
+          persistentVolumeClaim:
+            claimName: $PROJECT-log
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: $PROJECT
+  namespace: dovepay-b2b
+  labels:
+    app: $PROJECT
+    service: $PROJECT
+spec:
+  ports:
+    - name: http
+      protocol: TCP # 协议
+      port: 117  # Service端口
+      targetPort: 8080 # 容器端口
+      nodePort: 30037  # 对外暴露的端口，可以指定
+  selector:
+    app: $PROJECT
+  type: NodePort
+---
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: $PROJECT
+  namespace: dovepay-b2b
+  labels:
+    app: $PROJECT
+    service: $PROJECT
+spec:
+  rules:
+    - host: app.$PROJECT.epay.k8s1.test
+      http:
+        paths:
+          - path: /$PROJECT
+            backend:
+              serviceName: $PROJECT
+              servicePort: 80
