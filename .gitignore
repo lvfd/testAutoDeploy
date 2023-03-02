@@ -24,7 +24,7 @@
 # !/custom
 # themes.json
 # yarn.lock
-package-lock.json
+# package-lock.json
 .DS_Store
 # testnode.js
 # /.idea

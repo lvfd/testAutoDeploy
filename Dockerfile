@@ -14,12 +14,13 @@ WORKDIR /usr/src/app
 COPY .npmrc .npmrc
 
 # where available (npm@5+)
-# COPY package*.json ./
-COPY package.json package.json
+COPY package*.json ./
+# COPY package.json package.json
 
-RUN npm install --omit=dev
+# RUN npm install --omit=dev
 # If you are building your code for production
 # RUN npm ci --only=production
+RUN npm ci --omit=dev
 
 RUN rm -f .npmrc
 
