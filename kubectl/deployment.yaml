@@ -29,7 +29,7 @@ spec:
         - name: $PROJECT
           image: $IMAGE_NAME
           ports:
-            - containerPort: 3000
+            - containerPort: 8080
           resources:
             limits:
               cpu: 500m
