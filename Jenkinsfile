@@ -28,7 +28,7 @@ def imageUrl = "${env.JOB_NAME}:${dockerTag}"
 //定义k8s-barbor的凭证
 //def secret_name="访问k8stoken"
 
-def deployment_filename = ${branch_name}.equalsIgnoreCase('master')? 'deployment-prod': 'deployment'
+def deployment_filename = branch_name.equalsIgnoreCase('master')? 'deployment-prod': 'deployment'
 
 
 node("jenkins-slave"){
