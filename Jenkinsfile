@@ -28,7 +28,7 @@ def imageUrl = "${env.JOB_NAME}:${dockerTag}"
 //定义k8s-barbor的凭证
 //def secret_name="访问k8stoken"
 
-
+def deployment_filename = ${branch_name}.equalsIgnoreCase('master')? 'deployment-prod': 'deployment'
 
 
 node("jenkins-slave"){
@@ -68,12 +68,12 @@ node("jenkins-slave"){
         
       //替换变量
       def deploy_image_name = "${harbor_url}/project_library/${imageUrl}"
-      sh "sed -i 's#\$IMAGE_NAME#${deploy_image_name}#' kubectl/deployment.yaml"
-      sh "sed -i 's#\$PROJECT#${JOB_NAME}#' kubectl/deployment.yaml"
+      sh "sed -i 's#\$IMAGE_NAME#${deploy_image_name}#' kubectl/${deployment_filename}.yaml"
+      sh "sed -i 's#\$PROJECT#${JOB_NAME}#' kubectl/${deployment_filename}.yaml"
       sh "sed -i 's#\$PROJECT#${JOB_NAME}#' kubectl/pvpvc-test.yml"
         
       //替换yml名称，以便滚动更新
-      sh "mv kubectl/deployment.yaml kubectl/deployment_${env.BUILD_ID}.yaml"
+      sh "mv kubectl/${deployment_filename}.yaml kubectl/deployment_${env.BUILD_ID}.yaml"
         
       //创建PVPVC
       sh "kubectl apply -f kubectl/pvpvc-test.yml"
