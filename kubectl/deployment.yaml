@@ -18,6 +18,8 @@ spec:
         version: latest
         deployment: $PROJECT-latest
     spec:
+      nodeSelector:
+           node: slave
       hostAliases:
       - ip: 108.0.100.60
         hostnames:
