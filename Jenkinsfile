@@ -1,7 +1,7 @@
 import java.text.SimpleDateFormat
 
 //定义一个版本号作为当次构建的版本，输出结果 20191210175842_69
-SimpleDateFormat dateFormat = new SimpleDateFormat('yyyyMMddHHmm', Locale.ENGLISH)
+SimpleDateFormat dateFormat = new SimpleDateFormat('yyyyMMddHHmm')
 String dockerTag = dateFormat.format(new Date()) + "_${env.BUILD_ID}"
 Boolean isMaster = branch_name.equalsIgnoreCase('master')
 
