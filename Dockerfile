@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG src = ${src}
+ARG src
 # FROM node:18.13.0-alpine
 FROM ${src}/node:18.18.0-alpine
 ENV NODE_ENV=production
