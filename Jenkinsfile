@@ -8,13 +8,15 @@ Boolean isMaster = branch_name.equalsIgnoreCase('master')
 //定义变量
 
 String gitAddress = 'http://10.1.85.161:8888/lvfudi/testAutoDeploy.git'
-String gitAuth = '8dccd9d7-19d6-47ab-87c5-4173a88c4661'
+// String gitAuth = '8dccd9d7-19d6-47ab-87c5-4173a88c4661'
+String gitAuth = "${gitAuth}"
 //def git_branch = "${branch_name}"
 
 //Harbor私服地址
 String harborUrl = '10.1.85.22:1034'
 //Harbor的凭证
-String harborAuth = '6b8facae-6afc-4818-a4e3-2e2a8b16432a'
+// String harborAuth = '6b8facae-6afc-4818-a4e3-2e2a8b16432a'
+String harborAuth = "${harborAuth}"
 
 //构建版本的名称
 String imageUrl = "${env.JOB_NAME}:${dockerTag}"
@@ -24,7 +26,7 @@ String imageUrl = "${env.JOB_NAME}:${dockerTag}"
 //定义k8s-barbor的凭证
 //def secret_name="访问k8stoken"
 
-Boolean deploymentFilename = isMaster ? 'deployment-prod' : 'deployment'
+String deploymentFilename = isMaster ? 'deployment-prod' : 'deployment'
 
 node('jenkins-slave') {
     container('tools') {
@@ -44,7 +46,7 @@ node('jenkins-slave') {
         // 第二步
         stage('上传镜像') {
       //创建镜像
-      sh "docker build -t ${imageUrl} --rm=true ./"
+      sh "docker build --build-arg branch=${branch_name} -t ${imageUrl} --rm=true ./"
 
       //给镜像打标签
       sh "docker tag ${imageUrl} ${harborUrl}/project_library/${imageUrl}"
