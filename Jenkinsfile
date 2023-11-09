@@ -1,22 +1,15 @@
 import java.text.SimpleDateFormat
 
+Boolean isMaster = branch_name.equalsIgnoreCase('master')
+String gitAddress = 'http://10.1.85.161:8888/lvfudi/testAutoDeploy.git'
+String gitAuth = "${gitAuth}"
 //定义一个版本号作为当次构建的版本，输出结果 20191210175842_69
 SimpleDateFormat dateFormat = new SimpleDateFormat('yyyyMMddHHmm')
 String dockerTag = dateFormat.format(new Date()) + "_${env.BUILD_ID}"
-Boolean isMaster = branch_name.equalsIgnoreCase('master')
 
-//定义变量
-
-String gitAddress = 'http://10.1.85.161:8888/lvfudi/testAutoDeploy.git'
-// String gitAuth = '8dccd9d7-19d6-47ab-87c5-4173a88c4661'
-String gitAuth = "${gitAuth}"
-//def git_branch = "${branch_name}"
-
-//Harbor私服地址
-String harborUrl = '10.1.85.22:1034'
-//Harbor的凭证
-// String harborAuth = '6b8facae-6afc-4818-a4e3-2e2a8b16432a'
+String harborUrl = isMaster ? 'registry.ocp.dovepay' : '10.1.85.22:1034'
 String harborAuth = "${harborAuth}"
+String src = isMaster ? 'registry.ocp.dovepay/imagepri' : '10.1.85.22:1034/library'
 
 //构建版本的名称
 String imageUrl = "${env.JOB_NAME}:${dockerTag}"
@@ -46,7 +39,7 @@ node('jenkins-slave') {
         // 第二步
         stage('上传镜像') {
       //创建镜像
-      sh "docker build --build-arg branch=${branch_name} -t ${imageUrl} --rm=true ./"
+      sh "docker build --build-arg src=${src} -t ${imageUrl} --rm=true ./"
 
       //给镜像打标签
       sh "docker tag ${imageUrl} ${harborUrl}/project_library/${imageUrl}"

@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # FROM node:18.13.0-alpine
-FROM 10.1.85.22:1034/library/node:18.18.0-alpine
+FROM ${src}/node:18.18.0-alpine
 ENV NODE_ENV=production
 
 # Create app directory
