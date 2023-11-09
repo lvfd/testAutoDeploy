@@ -104,7 +104,7 @@ node("jenkins-slave"){
     stage('检查部署应用'){
         
       //获取日志
-      sh 'sleep 40s'
+      sh 'sleep 20s'
       timeout(time: 3, unit: 'MINUTES'){
         sh '''
           ID_NAME=`kubectl get pods  -n dovepay-b2b  | grep  ${JOB_NAME} | awk -F " " '{print $1}' | head -1`
