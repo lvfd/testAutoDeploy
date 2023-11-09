@@ -4,8 +4,7 @@ import java.lang.String
 //定义一个版本号作为当次构建的版本，输出结果 20191210175842_69
 def dateFormat = new SimpleDateFormat("yyyyMMddHHmm")
 def dockerTag = dateFormat.format(new Date()) + "_${env.BUILD_ID}"
-
-
+def isMaster = branch_name.equalsIgnoreCase('master')
 
 //定义变量
 
@@ -28,7 +27,7 @@ def imageUrl = "${env.JOB_NAME}:${dockerTag}"
 //定义k8s-barbor的凭证
 //def secret_name="访问k8stoken"
 
-def deployment_filename = branch_name.equalsIgnoreCase('master')? 'deployment-prod': 'deployment'
+def deployment_filename = isMaster? 'deployment-prod': 'deployment'
 
 
 node("jenkins-slave"){
